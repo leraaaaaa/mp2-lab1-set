@@ -309,3 +309,39 @@ TEST(TBitField, bitfields_with_different_bits_are_not_equal)
 
   EXPECT_NE(bf1, bf2);
 }
+
+
+TEST(TBitField, compare_bitfield_and_twice_inverted_bitfield)
+{
+    const int size = 10;
+    TBitField bf1(size), bf2(size);
+    int i = 1;
+    while (i < 10)
+    {
+        bf1.SetBit(i);
+        i += i;
+    }
+    bf2 = bf1;
+    bf2 = (~(~bf1));
+    EXPECT_EQ(bf1, bf2);
+}
+
+TEST(TBitField, and_operator_applied_to_bitfield_and_inverted_bitfield)
+{
+    const int size = 10;
+    TBitField bf1(size), bf2(size), bf3(size);
+    bf1.SetBit(2);
+    bf1.SetBit(7);
+    bf2 = (~bf1);
+    EXPECT_EQ(bf3, bf1 & bf2);
+}
+
+TEST(TBitField, or_operator_applied_to_bitfield_and_inverted_bitfield)
+{
+    const int size = 10;
+    TBitField bf1(size), bf2(size), bf3(size);
+    bf1.SetBit(2);
+    bf1.SetBit(7);
+    bf2 = (~bf1);
+    EXPECT_EQ((~bf3), bf1 | bf2);
+}
