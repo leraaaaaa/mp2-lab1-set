@@ -11,7 +11,8 @@ TBitField::TBitField(int len)
 {
 	if (len <= 0) throw "negative len";
 	BitLen = len;
-	MemLen = BitLen / (sizeof(TELEM) * 8) + 1; 
+	MemLen = BitLen / (sizeof(TELEM) * 8); 
+	if ((BitLen % (sizeof(TELEM) * 8)) > 0) MemLen++;
 	pMem = new TELEM[MemLen];
 	for (int i = 0; i < MemLen; i++)
 		pMem[i] = 0;
@@ -86,7 +87,6 @@ TBitField& TBitField::operator=(const TBitField &bf) // присваивание
 	for (int i = 0; i < MemLen; i++)
 		pMem[i] = bf.pMem[i];
 	return (*this);
-}
 }
 
 int TBitField::operator==(const TBitField &bf) const // сравнение
